@@ -6,17 +6,23 @@
 #card1 {
     background-color: rgba(55, 83, 64, 0.2);
     border-color: rgba(142, 182, 155, 1); 
+    font-size: 25px;
     
 }
 
+#c1title {
+    font-size: 40px;
+    font-weight: bold;
+}
+
 #card2 {
-    background-color: rgba(78, 91, 59, 0.2);
+    background-color: rgba(94, 140, 49, 0.2);
     border-color: rgba(118, 148, 76, 1);
 
 }
 
 #card3 {
-    background-color:  rgba(94, 140, 49, 0.2);
+    background-color: rgba(59, 86, 18, 0.2);
     border-color: rgba(94, 140, 49, 1);
 }
 

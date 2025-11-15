@@ -3,12 +3,18 @@ import cong from "../configuration";
 import { getDatabase, ref, onValue } from "firebase/database";
 import { auth } from "../configuration";
 import { Button, Card, Row, Col, Container } from 'react-bootstrap';
-import { signOut } from 'firebase/auth'
+import { signOut } from 'firebase/auth';
+import {motion} from 'framer-motion';
 import '../Home.css'
+import plantimg from '../assets/plantimg.png';
 
 function Home() {
     const [data, setData] = useState([]);
+    const [showTypewriter, setShowTypewriter] = useState(false);
+    const [plantImage, setPlantImage] = useState("../assets/plantimg.png");
+    const [text, setText] = useState("")
 
+    const sleepScore = 2;
     useEffect(() => {
 
     const database = getDatabase(cong); 
@@ -38,20 +44,45 @@ function Home() {
     }
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+        setShowTypewriter(true);
+        }, 2000); 
+  
+          return () => clearTimeout(timer);
+      }, []);  
+
+  useEffect(() => {
+    if (sleepScore === 1) {
+        setPlantImage(plantimg);
+        setText("Hi! Your plant is dead.")
+    } else if (sleepScore === 2) {
+        setPlantImage(plantimg);
+        setText("Hi! Your plant is dead.")
+    } else if (sleepScore === 3) {
+        setPlantImage(plantimg);
+        setText("Hi! Your plant is alive!")
+    } else {
+        setPlantImage(plantimg)
+        setText("Hi! Your plant is alive!")
+    }
+    }, [sleepScore]);
+
   return (
     <div>
         <Container fluid className="dashboard-container">
-        <Row className="g-3 justify-start">
-            <Col xs={12} md={6}>
+        <Row className="gt-3 justify-start">
+            <Col xs={12} md={12}>
                 <Card id="card1" border="success" className="w-100 h-100">
                     <Card.Body>
-                        <Card.Title>Hello...</Card.Title>
-                        <Card.Text>Welcome to your sleep analytics dashboard!</Card.Text>
+                        <Card.Title id="c1title">Hello!</Card.Title>
+                        <Card.Text>Welcome to your personalized sleep analytics dashboard, where you can see your sleep data mapped into measurable progress.</Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
-
-            <Col xs={12} md={6}>
+        </Row>
+        <Row className="g-3 mt-2 justify-start">
+            <Col xs={12} md={4}>
                 <Card id="card2" border="success" className="w-100 h-100">
                     <Card.Body>
                         <Card.Title>Sleep Duration</Card.Title>
@@ -59,28 +90,59 @@ function Home() {
                     </Card.Body>
                 </Card>
             </Col>
-        </Row>
-
-        <Row className="g-3 mt-2 justify-start">
-            <Col xs={12} md={6}>
+            <Col xs={12} md={4}>
                 <Card id="card3" border="success" className="w-100 h-100">
                     <Card.Body>
                         <Card.Title>REM Sleep</Card.Title>
-                        <Card.Text>You spent __ hours in REM sleep</Card.Text>
+                        <Card.Text>Based on our data, we estimate that you spent __ hours, or ___ minutes, in REM sleep.</Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
-
-            <Col xs={12} md={6}>
+            <Col xs={12} md={4}>
                 <Card id="card4" border="success" className="w-100 h-100">
                     <Card.Body>
                         <Card.Title>Sleep Score</Card.Title>
-                        <Card.Text>Your sleep score last night was...</Card.Text>
+                        <Card.Text>Your sleep score last night was {sleepScore}</Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
         </Row>
+        <Row className="mt-4">
+            <Col xs={12}>
+                <Card className="main-image-card">
+                    <Card.Img 
+                    variant="top" 
+                    src={plantImage} 
+                    className="plant-image"
+                    />
+                </Card>
+            </Col>
+        </Row> 
         </Container>
+
+        {showTypewriter && (
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    style={{
+                        maxWidth: '1500px',
+                        padding: '50px',
+                        backgroundColor: 'white',
+                        borderRadius: '10px',
+                        boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                        fontSize: '21px',
+                        lineHeight: '1.6',
+                        textAlign: 'center',
+                        marginTop: '20px'
+                    }}
+                >
+                    <Typewriter 
+                        text={text}
+                        typingSpeed={50}
+                    />
+                </motion.div>
+        )}
 
         <Row>
             <Button onClick={onLogout} id="logOutBtn">Logout</Button>
@@ -88,5 +150,23 @@ function Home() {
     </div>
   );
 }
+
+const Typewriter = ({ text, typingSpeed = 100 }) => {
+    const [displayedText, setDisplayedText] = useState("");
+    const [charIndex, setCharIndex] = useState(0);
+
+    useEffect(() => {
+        if (charIndex < text.length) {
+            const timeoutId = setTimeout(() => {
+                setDisplayedText((prev) => prev + text.charAt(charIndex));
+                setCharIndex((prev) => prev + 1);
+            }, typingSpeed);
+
+            return () => clearTimeout(timeoutId);
+        }
+    }, [charIndex, text, typingSpeed]);
+
+    return <span>{displayedText}</span>;
+};
 
 export default Home;
