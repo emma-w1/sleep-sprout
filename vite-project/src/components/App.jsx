@@ -18,13 +18,11 @@ function App() {
 
   return (
       <Routes>
-          {/* If user is logged in, redirect to home, otherwise show auth */}
             <Route 
               path="/" 
               element={user ? <Navigate to="/home" /> : <Login />} 
             />
-                
-          {/* Protected route - only accessible if logged in */}
+              
             <Route 
                 path="/home" 
                 element={user ? <Home /> : <Navigate to="/" />} 

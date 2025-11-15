@@ -3,6 +3,8 @@ import { auth } from "../configuration";
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword  } from 'firebase/auth';
 import { Form, Button } from 'react-bootstrap';
+import logo from '../assets/logo.png';
+import '../Login.css';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -18,12 +20,10 @@ const Login = () => {
 
       try {
             if (isLogin) {
-                // Login existing user
                 await signInWithEmailAndPassword(auth, email, password);
                 console.log('Login successful');
                 navigate("/home");
             } else {
-                // Create new user
                 await createUserWithEmailAndPassword(auth, email, password);
                 console.log("Signup successful!");
                 navigate("/home");
@@ -35,13 +35,18 @@ const Login = () => {
     };
 
     return (
-        <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px' }}>
-            <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
+        <div style={{ maxWidth: '500px', margin: '50px auto', padding: '20px' }}>
+            <div id="loginLogo">
+                <img src={logo} alt="Logo image" />
+            </div>
+            <div id="loginForm">
+            <div id="li-or-su">{isLogin ? 'Log In' : 'Sign Up'}</div>
             
             <Form onSubmit={onSubmit}>
                 <Form.Group className="mb-3" controlId="formEmail">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control
+                        size="lg"
                         type="email"
                         placeholder="Enter email"
                         value={email}
@@ -53,6 +58,7 @@ const Login = () => {
                 <Form.Group className="mb-3" controlId="formPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
+                        size="lg"
                         type="password"
                         placeholder="Password"
                         value={password}
@@ -62,12 +68,11 @@ const Login = () => {
                 </Form.Group>
 
                 {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
-
-                <Button variant="primary" type="submit" className="w-100 mb-3">
-                    {isLogin ? 'Login' : 'Sign Up'}
+                <Button variant="primary" type="submit" className="w-100 mb-3" id="submitButton" size="lg">
+                    {isLogin ? 'Log In' : 'Sign Up'}
                 </Button>
 
-                <div style={{ textAlign: 'center' }}>
+                <div style={{ textAlign: 'center' }} id="li-su-btn">
                     <Button 
                         variant="link" 
                         onClick={() => {
@@ -82,6 +87,7 @@ const Login = () => {
                 </div>
             </Form>
         </div>
+    </div>
     );
 };
 

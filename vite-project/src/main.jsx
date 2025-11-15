@@ -4,6 +4,7 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import App from './components/App.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './Login.css'
 
 
 createRoot(document.getElementById('root')).render(
