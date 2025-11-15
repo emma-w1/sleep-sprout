@@ -1,0 +1,32 @@
+.dashboard-container {
+  margin-top: 0;
+  padding-top: 10px;
+}
+
+#card1 {
+    background-color: rgba(55, 83, 64, 0.2);
+    border-color: rgba(142, 182, 155, 1); 
+    
+}
+
+#card2 {
+    background-color: rgba(78, 91, 59, 0.2);
+    border-color: rgba(118, 148, 76, 1);
+
+}
+
+#card3 {
+    background-color:  rgba(94, 140, 49, 0.2);
+    border-color: rgba(94, 140, 49, 1);
+}
+
+#card4 {
+    background-color: rgba(50, 100, 18, 0.2);
+    border-color: rgba(50, 100, 18, 1)
+}
+
+#logOutBtn {
+    background-color: #572D0C;
+    border-color: #572D0C;
+    margin-top: 20px;
+}

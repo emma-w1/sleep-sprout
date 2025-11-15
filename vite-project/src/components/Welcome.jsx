@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {motion} from 'framer-motion';
 import plantimg from '../assets/plantimg.png';
 import { useNavigate } from 'react-router-dom'; 
-import '../Welcome.css'
 
 const Welcome = () => {
     const navigate = useNavigate(); 
@@ -57,7 +56,7 @@ const Welcome = () => {
                     }}
                 >
                     <Typewriter 
-                        text="Hi, I'm Mr. Sprout, your personal sleep plant! Good sleep habits help me grow and bad habits... well, you'll see. After analyzing your sleep data, I'll show you where you can improve and how you can keep me (and yourself!) healthy."
+                        text="Hi, I'm Mr. Sprout, your personal sleep plant! Good sleep habits help me grow and bad habits... well, you'll see. After analyzing your sleep data, I'll show you where you can improve and how you can keep me (and yourself!) healthy. Click me to see how I analyze it!"
                         typingSpeed={50}
                     />
                 </motion.div>

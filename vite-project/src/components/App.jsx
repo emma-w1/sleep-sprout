@@ -7,15 +7,26 @@ import Welcome from './Welcome';
 import WelcomeLogIn from './WelcomeLogIn';
 import { auth } from '../configuration';
 import '../App.css'
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 
 // App.js
 
 function App() {
-  const [user, loading] = useAuthState(auth);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+
+    // Cleanup subscription
+    return () => unsubscribe();
+  }, []);
 
   if (loading) {
-        return <div>Loading!</div>;
+    return <div>Loading...</div>;
   }
 
   function ProtectedRoute({ user, children }) {
@@ -59,8 +70,6 @@ function App() {
             />
       </Routes>
     );
-
-
 }
 
 export default App;
