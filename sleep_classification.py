@@ -53,15 +53,15 @@ def _extract_values_from_data(all_data, key):
                 total_values.append(doc_data[key])
     return total_values
 
-# !!!!!!!!!
-def bucket_by_30_mins(records):  
+def bucket_by_30_mins(records):  #15 secs for demo
     buckets = []
-    
-    bucket_start = records[0]["timestamp"]
-    bucket_end   = bucket_start + timedelta(minutes=30)
-    current_bucket = []
+    records_list = list(records.values())
+    records_list.sort(key=lambda r: r["timestamp"]) #sorts by timestamp
 
-    for record in records:
+    bucket_start = records_list[0]["timestamp"]
+    bucket_end   = bucket_start + 15 #CHANGE LATER TO 30 MINS: 15 secs for demo
+    current_bucket = []
+    for record in records_list:
         timestamp = record["timestamp"]
         #checks if item is in current bucket
         if bucket_start <= timestamp <= bucket_end:
@@ -71,9 +71,9 @@ def bucket_by_30_mins(records):
             buckets.append(current_bucket)
             while timestamp >= bucket_end:
                 bucket_start = bucket_end
-                bucket_end = bucket_start + timedelta(minutes=30)
+                bucket_end = bucket_start + 15 #CHANGE LATER TO 30 MINS: 15 secs for demo
             #current bucket starts with this record
-            current_bucket = record
+            current_bucket = [record]
     #add last bucket
     buckets.append(current_bucket)
     return buckets #buckets is a list of groups of records (dictionaries) that are measured in during a time interval of 30 mins
@@ -82,9 +82,21 @@ def find_bucket_temp_diff(records):
     buckets = bucket_by_30_mins(records)
     temp_diffs_per_bucket = []
     for bucket in buckets:
-        temp_bucket_diff = buckets
+        initial_temp = bucket[0]['temptoGive']
+        final_temp = bucket[-1]['temptoGive']
+        temp_bucket_diff = final_temp-initial_temp
         temp_diffs_per_bucket.append(temp_bucket_diff)
     return temp_diffs_per_bucket
+
+def find_bucket_movements(records):
+    buckets = bucket_by_30_mins(records)
+    movements_per_bucket = []
+    for bucket in buckets:
+        total = 0
+        for record in bucket:
+            total += record['numMoved']
+        movements_per_bucket.append(total)
+    return movements_per_bucket
 
         
 def extract_total_values(session_key,session_data):
@@ -146,13 +158,7 @@ def extract_total_values(session_key,session_data):
 
 
 #Todo starting temp so that we can see the difference in temp not temp value since it is highly variable per person
-def sleep_classification(bucket_index, skin_temp, body_movement_count): #skin_temp and body_movement_count are lists  
-    initial_temp = skin_temp[0] 
-    body_movement_time_index = body_movement_count[time_index] 
-    current_temp = skin_temp[time_index]
-    diff_temp = current_temp - initial_temp 
-
-
+def sleep_classification(skin_temp, body_movement_count): #skin_temp and body_movement_count are lists  
     headers = {
     'Authorization': 'Bearer '+ key,
     'Content-Type': 'application/json'
@@ -182,14 +188,14 @@ def sleep_classification(bucket_index, skin_temp, body_movement_count): #skin_te
 
 
     Based on literature, use this data to classify REM sleep or Non-REM sleep:
-    difference in skin temperature from initial temperature (in degrees Fahrenheit) - if the value is negative, the current temp is less than the initial temp; if the value is positive, the current temp is above the initial temp: {diff_temp}
-    how many times body movement is detected (resets after every 30-minute interval): {body_movement_time_index}
+    difference in skin temperature from initial temperature (in degrees Fahrenheit) - if the value is negative, the final temp is less than the initial temp; if the value is positive, the current temp is above the initial temp: {skin_temp}
+    how many times body movement is detected (resets after every 30-minute interval): {body_movement_count}
 
 
     Return only one of the following answers: "REM Sleep" or "Non-REM Sleep". DO NOT RETURN ANY OTHER TEXT/NUMBERS/VALUES!
     """
             }
-        
+
     ]
     }
     response = requests.post(url, headers=headers, json=data)
@@ -198,7 +204,7 @@ def sleep_classification(bucket_index, skin_temp, body_movement_count): #skin_te
     return assistant_reply.strip()
 
 def grow_decision(classifications, duration):
-    hours = duration / 60
+    hours = duration / 60 #CHANGE THIS
     
     #duration is best if it meets/exceeds 10 hours 
     duration_score = hours / 10
@@ -277,6 +283,16 @@ def calculate_total_snores(records):
         total += value["numSnore"]
     return total
 
+def calculate_avg_temp(records):
+    total = 0
+    count = 0
+    records_values = records.values()
+    for record in records_values:
+        total += record['temptoGive']
+        count += 1
+    avg = total/count
+    return avg
+
 def listen_for_updates(event):
     """Firebase listener callback - triggers when CPXData changes"""
     print(f"Firebase event: {event.event_type} at path: {event.path} data: {event.data}")
@@ -286,25 +302,26 @@ def listen_for_updates(event):
         ref = db.reference(event.path)
         session_data = ref.get()
         print("finished downloading session", session_data)
-        print(calculate_total_duration(session_data))
-        print(calculate_total_movements(session_data['records']))
 
-    # if event.event_type == 'put':
-    #     # Get all sessions
-    #     last_data = ref.get()
+        total_duration = calculate_total_duration(session_data)
+        print("total duration:",total_duration)
 
-    #     print("put")
-       
-    #     if children_data and isinstance(children_data, dict):
-    # #     # Process each session
-    #         for session_key, session_data in children_data.items():
-    #             if isinstance(session_data, dict) and "ended" in session_data:
-    #     #             # Check if we've already processed this session
-    #                 if "results" not in session_data:
-    #                     print(f"Processing new completed session: {session_key}")
-    #                     extract_total_values(session_key, session_data)
-    #                 else:
-    #                     print(f"Session {session_key} already processed, skipping...")
+        total_movements = calculate_total_movements(session_data['records'])
+        print("total movements:",total_movements)
+
+        total_snores = calculate_total_snores(session_data['records'])
+        print("total snores: ",total_snores)
+
+        temp_diff_per_bucket = find_bucket_temp_diff(session_data['records'])
+        print("temperature differences between initial and final records per bucket",temp_diff_per_bucket)
+
+        avg_temp = calculate_avg_temp(session_data['records'])
+        print("average temperature:", avg_temp)
+
+        movements_per_bucket = find_bucket_movements(session_data['records'])
+        print("total movements per bucket",movements_per_bucket)
+
+
 
 
 # Set up Firebase listener
