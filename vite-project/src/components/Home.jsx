@@ -17,7 +17,16 @@ function Home() {
     const [plantImage, setPlantImage] = useState("../assets/plantimg.png");
     const [text, setText] = useState("")
 
-    const sleepScore = 4;
+    const sleepScore = 3;
+    
+    // Add home-page class to body when component mounts
+    useEffect(() => {
+        document.body.classList.add('home-page');
+        return () => {
+            document.body.classList.remove('home-page');
+        };
+    }, []);
+
     useEffect(() => {
 
     const database = getDatabase(cong); 
@@ -73,8 +82,8 @@ function Home() {
 
   return (
     <div>
-        <Container fluid className="dashboard-container">
-        <Row className="gt-3 justify-start">
+        <Container fluid className="dashboard-container containerTop">
+        <div className="gt-3 topSection">
             <Col xs={12} md={12}>
                 <Card id="card1" border="success" className="w-100 h-100">
                     <Card.Body>
@@ -83,7 +92,9 @@ function Home() {
                     </Card.Body>
                 </Card>
             </Col>
-        </Row>
+        </div>
+
+        <div class="content">
         <Row className="g-3 mt-2 justify-start">
             <Col xs={12} md={4}>
                 <Card id="card2" border="success" className="w-100 h-100">
@@ -110,28 +121,18 @@ function Home() {
                 </Card>
             </Col>
         </Row>
+
         <Row className="mt-4">
             <Col xs={12} md={8}>
                 <Card className="main-image-card" id="plant-card">
-                    <Card.Body className="d-flex justify-content-center align-items-center">
-                        <img  
-                        src={plantImage} 
-                        className="plant-image"
-                        />
-                    </Card.Body>
-                </Card>
-            </Col>
-            <Col xs={12} md={4}>
-                <Card id="card4" border="success" className="w-100 h-100">
-                    <Card.Body>
-                        <Card.Title>Sleep Score</Card.Title>
-                        <Card.Text>Your sleep score last night was {sleepScore}</Card.Text>
-                    </Card.Body>
                 </Card>
             </Col>
         </Row> 
+        </div>
+
         </Container>
 
+<div class="content">
         {showTypewriter && (
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -159,6 +160,8 @@ function Home() {
         <Row>
             <Button onClick={onLogout} id="logOutBtn">Logout</Button>
         </Row>
+
+        </div>
     </div>
   );
 }

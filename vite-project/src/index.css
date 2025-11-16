@@ -1,0 +1,9 @@
+/* Default background image for all pages */
+body {
+  background-image: url('./assets/backgroundimg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
