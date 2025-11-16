@@ -267,11 +267,11 @@ def calculate_rem_score(classifications):
             
 
             Be lenient with grading, as you must understand that data is taken at more general intervals. Please ensure the grade given is consistent given the same or similar data, and that grading can be replicated if I run this prompt multiple times.
-            Please only provide a response based on the following choices, DO NOT ADD EXTRA TEXT OR STRAY FROM CHOICES, ONLY RETURN THE RESPONSE NOTED BY THE **:
-            Return **1** if classifications do not match ideal pattern
-            Return **2** if classifications do match ideal pattern to a small degree
-            Return **3** if classifications do match ideal patterns to a medium degree
-            Return **4** if classifications do match ideal patterns to a large degree
+            Please only provide a response based on the following choices, DO NOT ADD EXTRA TEXT OR STRAY FROM CHOICES, ONLY RETURN THE NUMERICAL RESPONSEs NOTED
+            Return 1 if classifications do not match ideal pattern
+            Return 2 if classifications do match ideal pattern to a small degree
+            Return 3 if classifications do match ideal patterns to a medium degree
+            Return 4 if classifications do match ideal patterns to a large degree
 
             """}
         ]
