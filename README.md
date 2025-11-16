@@ -1,18 +1,18 @@
 // README
-About : D 
+About : D <br>
 
 
 
 
 
-Bill of materials:
-*Circuit Playground Classic
-*Temperature & Humidity sensor
-*Cotton Fabric + regular thread
-*Conductive thread
-*Connectors I/O wires 
-*GUM WRAPPERS! 
-*Tape 
+Bill of materials: <br>
+*Circuit Playground Classic<br>
+*Temperature & Humidity sensor<br>
+*Cotton Fabric + regular thread<br>
+*Conductive thread<br>
+*Connectors I/O wires <br>
+*GUM WRAPPERS! <br>
+*Tape <br>
 
 
 Schematic:
