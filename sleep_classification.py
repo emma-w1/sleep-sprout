@@ -10,7 +10,6 @@ from datetime import timedelta
 
 
 
-
 # firebase config
 load_dotenv()
 keyPath = os.getenv('keyPath')

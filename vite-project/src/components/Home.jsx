@@ -16,9 +16,36 @@ function Home() {
     const [data, setData] = useState([]);
     const [showTypewriter, setShowTypewriter] = useState(false);
     const [plantImage, setPlantImage] = useState("../assets/plantimg.png");
-    const [text, setText] = useState("")
+    const [text, setText] = useState("");
+    const [sleepScore, setSleepScore] = useState(null);
+    const [duration, setDuration] = useState(null);
+    const [remDuration, setRemDuration] = useState(null);
+    const [snores, setSnores] = useState(null);
+    const [mvmts, setMvmts] = useState(null);
 
-    const sleepScore = 2;
+    useEffect(() => {
+        const db = getDatabase(cong);
+        const collectionRef = ref(db, '/CPXData');
+
+        onValue(collectionRef, (snapshot) => {
+            const allSessions = snapshot.val();
+            if (!allSessions) return;
+
+            const sessionKeys = Object.keys(allSession);
+            const latestSessionKey = sessionKeys[sessionKeys.length - 1];
+
+            const latestSession = allSessions[latestSessionKey];
+
+            const innerKey = Object.keys(latestSession)[0];
+            const metrics = latestSession[innerKey];
+
+            setSleepScore(metrics.final_score);
+            setDuration(metrics.duration);
+            setRemDuration(metrics.rem_duration);
+            setSnores(metrics.total_snores);
+            setMvmts(metrics.total_movements);
+        })
+    });
     
     // Add home-page class to body when component mounts
     useEffect(() => {
@@ -27,26 +54,6 @@ function Home() {
             document.body.classList.remove('home-page');
         };
     }, []);
-
-    useEffect(() => {
-
-    const database = getDatabase(cong); 
-    
-    const collectionRef = ref(database, "/CPXData");
-
-    const fetchData = () => {
-      onValue(collectionRef, (snapshot) => {
-        const dataItem = snapshot.val();
-
-        if (dataItem) {
-          const displayItem = Object.values(dataItem);
-          setData(displayItem);
-        }
-      });
-    };
-
-    fetchData();
-  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -92,7 +99,7 @@ function Home() {
                 <Card id="card2" border="success" className="w-100 h-100">
                     <Card.Body>
                         <Card.Title>Sleep Duration</Card.Title>
-                        <Card.Text>Your overall sleep duration last night was...</Card.Text>
+                        <Card.Text>Your overall sleep duration last night was {duration} seconds</Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
@@ -100,15 +107,15 @@ function Home() {
                 <Card id="card3" border="success" className="w-100 h-100">
                     <Card.Body>
                         <Card.Title>REM Sleep</Card.Title>
-                        <Card.Text>Based on our data, we estimate that you spent __ hours, or ___ minutes, in REM sleep.</Card.Text>
+                        <Card.Text>Based on our data, we estimate that you spent {remDuration} seconds in REM (Rapid Eye Movement) sleep.</Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
             <Col xs={12} md={4}>
                 <Card id="card4" border="success" className="w-100 h-100">
                     <Card.Body>
-                        <Card.Title>Snores</Card.Title>
-                        <Card.Text>You snored ___ times last night.</Card.Text>
+                        <Card.Title>Snores & Movements</Card.Title>
+                        <Card.Text>You snored {snores} times last night, and had a total of {mvmts} large movements during your sleep.</Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
@@ -129,7 +136,7 @@ function Home() {
                 <Card id="card4" border="success" className="w-100 h-100">
                     <Card.Body>
                         <Card.Title>Sleep Score</Card.Title>
-                        <Card.Text>Your sleep score last night was {sleepScore}</Card.Text>
+                        <Card.Text>Your sleep score last night was {sleepScore}, and it was calculated by carefully analyzing your overall duration and REM duration, as well as metrics like your body temperature variation during sleep and frequency of movement.</Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
