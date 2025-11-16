@@ -192,7 +192,7 @@ def sleep_classification(skin_temp, body_movement_count): #skin_temp and body_mo
     how many times body movement is detected (resets after every 30-minute interval): {body_movement_count}
 
 
-    Return only one of the following answers: "REM Sleep" or "Non-REM Sleep". DO NOT RETURN ANY OTHER TEXT/NUMBERS/VALUES!
+    Return a list of the same length as the lists of body movement and skin temperature given above, with only one of the following answers "REM Sleep" or "Non-REM Sleep" at each index representing your analysis of whether the data inputted at that index (body temperature and body movement data) was measured during REM or Non-REM Sleep. DO NOT RETURN ANY OTHER TEXT/NUMBERS/VALUES, ONLY THE LIST, AND MAKE SURE EACH INDEX OF OUTPUT CORRESPONDS TO THE STATE OF THE INPUT GIVEN!
     """
             }
 
