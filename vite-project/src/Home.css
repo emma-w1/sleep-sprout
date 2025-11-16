@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'The-Munday';
+    src: url("./assets/The-Munday.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* Override background image only for home page - create dotted grid pattern using SVG */
 body.home-page {
   background-color: #bee0be !important;
@@ -48,8 +56,9 @@ body.home-page #root {
 }
 
 #card1 {
-    background: linear-gradient(to bottom, #a8d5a8, #6a4a3a); 
-    font-size: 25px;
+    background: #6a4a3a; 
+    font-size: 30px;
+    font-family: 'The-Munday';
     color: white; 
     width: 100%;
     border-radius: 0 !important; 
@@ -61,7 +70,7 @@ body.home-page #root {
 }
 
 #c1title {
-    font-size: 40px;
+    font-size: 50px;
     font-weight: bold;
     color: white; /* white text for better contrast on dark gradient */
 }
@@ -81,6 +90,15 @@ body.home-page #root {
     border-color: rgba(50, 100, 18, 1)
 }
 
+#score-title {
+    font-size: 35px;
+}
+
+#score-text {
+    margin-top: 15px;
+    font-size: 25px;
+}
+
 #logOutBtn {
     background-color: #572D0C;
     border-color: #572D0C;
@@ -89,7 +107,7 @@ body.home-page #root {
 
 #plant-card {
     max-width: 100%;
-    max-height: 515px;
+    max-height: 530px;
     object-fit: contain;
     display: block;
     margin: 0 auto;

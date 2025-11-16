@@ -18,9 +18,11 @@ const Welcome = () => {
         return () => clearTimeout(timer);
     }, []);
 
+    useEffect(() => {
     if (isClicked) {
-        navigate("/home"); 
+        navigate("/home");
     }
+}, [isClicked, navigate]);
 
     return (
         <div style={{

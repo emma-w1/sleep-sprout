@@ -15,7 +15,7 @@ import backgroundimg from '../assets/backgroundimg.png';
 function Home() {
     const [data, setData] = useState([]);
     const [showTypewriter, setShowTypewriter] = useState(false);
-    const [plantImage, setPlantImage] = useState("../assets/plantimg.png");
+    const [plantImage, setPlantImage] = useState(null);
     const [text, setText] = useState("");
     const [sleepScore, setSleepScore] = useState(null);
     const [duration, setDuration] = useState(null);
@@ -31,7 +31,7 @@ function Home() {
             const allSessions = snapshot.val();
             if (!allSessions) return;
 
-            const sessionKeys = Object.keys(allSession);
+            const sessionKeys = Object.keys(allSessions);
             const latestSessionKey = sessionKeys[sessionKeys.length - 1];
 
             const latestSession = allSessions[latestSessionKey];
@@ -45,7 +45,7 @@ function Home() {
             setSnores(metrics.total_snores);
             setMvmts(metrics.total_movements);
         })
-    });
+    }, []);
     
     // Add home-page class to body when component mounts
     useEffect(() => {
@@ -93,13 +93,13 @@ function Home() {
             </Col>
         </div>
 
-        <div class="content">
+        <div className="content">
         <Row className="g-3 mt-2 justify-start">
             <Col xs={12} md={4}>
                 <Card id="card2" border="success" className="w-100 h-100">
                     <Card.Body>
                         <Card.Title>Sleep Duration</Card.Title>
-                        <Card.Text>Your overall sleep duration last night was {duration} seconds</Card.Text>
+                        <Card.Text>Your overall sleep duration last night was {duration} seconds.</Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
@@ -135,8 +135,8 @@ function Home() {
             <Col xs={12} md={4}>
                 <Card id="card4" border="success" className="w-100 h-100">
                     <Card.Body>
-                        <Card.Title>Sleep Score</Card.Title>
-                        <Card.Text>Your sleep score last night was {sleepScore}, and it was calculated by carefully analyzing your overall duration and REM duration, as well as metrics like your body temperature variation during sleep and frequency of movement.</Card.Text>
+                        <Card.Title id="score-title">Sleep Score</Card.Title>
+                        <Card.Text id="score-text">Your sleep score last night was {sleepScore}, and it was calculated by carefully analyzing your overall duration and REM duration, as well as metrics like your body temperature variation during sleep and frequency of movement.</Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
