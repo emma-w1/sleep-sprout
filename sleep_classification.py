@@ -10,7 +10,7 @@ from datetime import timedelta
 import json
 
 
-# firebase config
+# firebase config 
 load_dotenv()
 keyPath = os.getenv('keyPath')
 cred = credentials.Certificate(keyPath)
@@ -84,64 +84,6 @@ def find_bucket_movements(records):
         movements_per_bucket.append(total)
     return movements_per_bucket
 
-        
-def extract_total_values(session_key,session_data):
-    print(session_key,"ice cream")
-    print()
-    print()
-    print()
-    print(session_data,"cake")
-    # """Extract values, process data, and export results to Firebase"""
-    # all_data = ref.get()
-    
-    # if not all_data or "ended" not in all_data:
-    #     print("'ended' field not found. Waiting...")
-    #     return
-    
-    # # Extract values
-    # all_moved = _extract_values_from_data(all_data, "numMoved")
-    # all_temps = _extract_values_from_data(all_data, "temptoGive")
-    # all_snores = _extract_values_from_data(all_data, "numSnore")
-    
-    # if not all_moved or not all_temps or not all_snores:
-    #     print("Missing required data fields. Skipping...")
-    #     return
-    
-    # # Calculate totals and averages
-    # total_moves = sum(all_moved)
-    # total_snores = sum(all_snores)
-    # duration = all_data["ended"] - all_data["started"]
-    # hours = duration / 60
-    # avg_temp = sum(all_temps) / len(all_temps) if all_temps else 0
-    
-    # # Generate classifications
-    # classification_list = [] # every value is 30-min interval
-    # for i in range(len(all_temps)):
-    #     classification = sleep_classification(i, all_temps, all_moved)
-    #     classification_list.append(classification)
-    
-    # # Calculate REM sleep time
-    # rem_sleep_time = 0
-    # for i in classification_list:
-    #     if i == "REM Sleep":
-    #         rem_sleep_time += 30
-    
-    # # Get grow_decision score
-    # grow_decision_score = grow_decision(classification_list, duration)
-    
-    # # Export to Firebase
-    # results_ref = ref.child('results')
-    # results_ref.set({
-    #     'grow_decision': grow_decision_score,
-    #     'total_movement': total_moves,
-    #     'total_snore': total_snores,
-    #     'duration': duration,
-    #     'avg_temp': avg_temp,
-    #     'rem_sleep_time': rem_sleep_time
-    # })
-    
-
-
 
 #Todo starting temp so that we can see the difference in temp not temp value since it is highly variable per person
 def sleep_classification(skin_temp, body_movement_count): #skin_temp and body_movement_count are lists  
@@ -183,7 +125,7 @@ def sleep_classification(skin_temp, body_movement_count): #skin_temp and body_mo
     DO NOT RETURN ANY OTHER TEXT/NUMBERS/VALUES, ONLY THE LIST, AND MAKE SURE EACH INDEX OF OUTPUT CORRESPONDS TO THE INDICES OF THE INPUT GIVEN! 
     for example, the data at index 0 of skin_temp and index 0 of body_movement_count would be used to predict the REM classification at index 0.
 
-    PLEASE RETURN YOUR RESPONSE IN ARRAY FORMAT!!!!!
+    PLEASE RETURN YOUR RESPONSE IN ARRAY FORMAT!!!!! 
     """
             }
 
